@@ -41,6 +41,20 @@ Route::group([
         Route::get('get-one/{id}', 'PlacesController@getOne');
         Route::get('delete/{id}', 'PlacesController@delete');
     });
+
+    Route::group([
+      'users'
+    ], function() {
+
+    });
+
+    Route::group([
+      'visitors-types'
+    ], function() {
+          Route::post('save', 'VisitorsTypesController@save');
+          Route::post('get-list', 'VisitorsTypesController@getList');
+          Route::get('get-one/{id}', 'VisitorsTypesController@getList');
+    });
 });
 
 Route::group([

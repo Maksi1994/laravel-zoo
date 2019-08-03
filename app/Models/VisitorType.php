@@ -13,4 +13,8 @@ class VisitorType extends Model
     public function visitors() {
         return $this->hasMany(Visitor::class, 'type_id');
     }
+
+    public function scopeGetList(Request $request) {
+
+    }
 }
