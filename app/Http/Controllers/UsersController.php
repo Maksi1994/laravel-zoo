@@ -138,6 +138,14 @@ class UsersController extends Controller
         return $this->success($isUser);
     }
 
+    public function getList(Request $request) {
+      $users = User::with(['image', 'role'])
+      ->orderBy('created_at', $request->order ?? 'desc')
+      ->paginate(20, null, null, $request->page ?? 1);
+
+      return response()->json($users);
+    }
+
     public function getOne(Request $request)
     {
         $user = User::find($request->id);

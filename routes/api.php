@@ -13,13 +13,10 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::group([
     'prefix' => 'backend',
-    'namespace' => 'Backend'
+    'namespace' => 'Backend',
+    'middleware' => 'auth.role:admin'
 ], function () {
 
     Route::group([
@@ -43,17 +40,12 @@ Route::group([
     });
 
     Route::group([
-      'users'
-    ], function() {
-
-    });
-
-    Route::group([
-      'visitors-types'
+      'prefix'=>'visitors-types'
     ], function() {
           Route::post('save', 'VisitorsTypesController@save');
           Route::post('get-list', 'VisitorsTypesController@getList');
-          Route::get('get-one/{id}', 'VisitorsTypesController@getList');
+          Route::get('get-one/{id}', 'VisitorsTypesController@getOne');
+          Route::get('delete/{id}', 'VisitorsTypesController@delete');
     });
 });
 
@@ -67,6 +59,7 @@ Route::group([
     Route::get('get-one/{id}', 'UsersController@getOne');
     Route::get('get-all-roles', 'UsersController@getAllRole');
     Route::get('is-used-email/{email}', 'UsersController@isUsedEmail');
+    Route::post('get-list', 'UsersController@getList')->middleware('auth.role:admin');
 });
 
 Route::group([

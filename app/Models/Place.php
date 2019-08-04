@@ -25,6 +25,11 @@ class Place extends Model
         self::updateOrCreate($request);
     }
 
+    public function news()
+    {
+         return $this->morphToMany(News::Class, 'taggable');
+    }
+
     public function scopeGetList($query, Request $request)
     {
         $query->when($request->orderType === 'new', function ($q) use ($request) {

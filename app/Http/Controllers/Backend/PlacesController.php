@@ -32,7 +32,7 @@ class PlacesController extends Controller
     {
         $places = Place::with('images')
             ->getList($request)
-            ->paginate(20, null, null, $request->id);
+            ->paginate(20, null, null, $request->page ?? 1);
 
         return new PlacesCollection($places);
     }

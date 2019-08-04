@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use App\Models\News;
 
 class Animal extends Model
 {
@@ -19,6 +20,11 @@ class Animal extends Model
 
     public function place() {
         return $this->hasOne(Place::class);
+    }
+
+    public function tags()
+    {
+         return $this->morphToMany(News, 'taggable');
     }
 
     public static function saveOne(Request $request)
