@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Models\News;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -35,7 +36,9 @@ class NewsController extends Controller
     }
 
     public function getOne(Request $request) {
+        $news = News::with(['images', 'author'])->find($request->id);
 
+        return new NewsResoru
     }
 
     public function getList(Request $request) {
