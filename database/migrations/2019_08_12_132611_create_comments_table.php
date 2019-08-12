@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateNewsTaggables extends Migration
+class CreateCommentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateNewsTaggables extends Migration
      */
     public function up()
     {
-        Schema::create('news_taggables', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('news_id')->unsigned();
-            $table->string('tagable_type');
-            $table->bigInteger('tagable_id')->unsigned();
-            $table->foreign('news_id')->references('id')->on('news')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('title');
+            $table->string('body');
+            $table->bigInteger('author')->unsigned();
+            $table->foreign('author')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateNewsTaggables extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('news_taggables');
+        Schema::dropIfExists('comments');
     }
 }

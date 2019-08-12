@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 Route::group([
     'prefix' => 'backend',
     'namespace' => 'Backend',
-    'middleware' => 'auth.role:admin'
+    'middleware' => ['auth:api']
 ], function () {
 
     Route::group([
@@ -52,6 +52,7 @@ Route::group([
 Route::group([
     'prefix' => 'users',
 ], function () {
+    Route::get('is-admin', 'UsersController@isAdmin')->middleware('auth:api');
     Route::post('regist', 'UsersController@regist');
     Route::post('login', 'UsersController@login');
     Route::post('update-one', 'UsersController@updateOne');
@@ -59,7 +60,23 @@ Route::group([
     Route::get('get-one/{id}', 'UsersController@getOne');
     Route::get('get-all-roles', 'UsersController@getAllRole');
     Route::get('is-used-email/{email}', 'UsersController@isUsedEmail');
-    Route::post('get-list', 'UsersController@getList')->middleware('auth.role:admin');
+    Route::post('get-list', 'UsersController@getList');
+});
+
+Route::group([
+   'prefix' => 'estimates',
+   'middleware' => 'auth:api'
+], function() {
+    Route::post('save-estimate', 'EstimatesController@saveEstimate');
+});
+
+Route::group([
+   'prefix' => 'comments',
+   'middleware' => 'auth:api'
+], function() {
+    Route::post('save', 'CommentsController@save');
+    Route::post('get-list', 'CommentsController@getList');
+    Route::post('delete', 'CommentsController@delete');
 });
 
 Route::group([

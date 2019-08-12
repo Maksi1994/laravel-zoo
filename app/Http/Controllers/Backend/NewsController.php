@@ -35,11 +35,17 @@ class NewsController extends Controller
     }
 
     public function getOne(Request $request) {
+        $news = News::with(['author', 'animals', 'places'])->find($request->id);
 
+        return new NewsRessource($news);
     }
 
     public function getList(Request $request) {
+        $news = News::with(['author', 'animals', 'places'])
+        ->getList($requst)
+        ->paginate(20, null, null, $requst->page ?? 1);
 
+        return new NewsCollection($news);
     }
 
     public function delete(Request $request) {

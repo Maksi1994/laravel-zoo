@@ -2,6 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use Closure;
+use Illuminate\Http\Request;
+
 class AuthRole
 {
   /**
@@ -9,14 +12,22 @@ class AuthRole
    *
    * @param  \Illuminate\Http\Request  $request
    * @param  \Closure  $next
-   * @param  string|null  $guard
+   * @param  string|null  $role
    * @return mixed
    */
-  public function handle($request, Closure $next, $role)
+  public function handle(Request $request, Closure $next, $role = null)
   {
       $userModel = $request->user();
+      
+      if (empty($userModel)) {
+        return response()->json([
+          'success' => false
+        ]);
+      }
 
-      if (!empty($userModel) || $userModel->isRole($role)) {
+      if (!$role) {
+        return $next($request);
+      } else if ($userModel->hasRole($role)) {
           return response()->json([
             'success' => false
           ]);

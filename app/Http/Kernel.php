@@ -38,7 +38,6 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            \App\Http\Middleware\AuthRole::class,
             \Barryvdh\Cors\HandleCors::class,
             'throttle:60,1',
             'bindings',

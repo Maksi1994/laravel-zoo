@@ -22,9 +22,8 @@ class AnimalsController extends Controller
             'place_id' => 'required|exists:places,id'
         ]);
         $success = false;
-        $files = $request->allFiles();
 
-        if (!$validation->fails() && !empty($files)) {
+        if (!$validation->fails()) {
             Animal::saveOne($request);
             $success = true;
         }
@@ -50,6 +49,8 @@ class AnimalsController extends Controller
 
     public function delete(Request $request)
     {
-        Animal::destroy($request->id);
+        $succss = (boolean)Animal::destroy($request->id);
+
+        return $this->success($success);
     }
 }

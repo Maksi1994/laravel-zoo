@@ -21,7 +21,8 @@ class UsersController extends Controller
         $validation = Validator::make($request->all(), [
             'name' => 'required|min:3',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:6'
+            'password' => 'required|min:6',
+            'role_id' => 'required|exists:roles,id'
         ]);
         $success = false;
 
@@ -30,7 +31,8 @@ class UsersController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                'activate_token' => Str::random(25)
+                'activate_token' => Str::random(25),
+                'role_id' => $request->role_id
             ]);
 
             $user->notify(new Registration($user));
@@ -49,13 +51,16 @@ class UsersController extends Controller
     {
         $validation = Validator::make($request->all(), [
             'id' => 'required|exists:users',
-            'name' => 'required|min:3'
+            'name' => 'required|min:3',
+            'role_id' => 'exists:roles,id'
         ]);
         $success = false;
 
         if (!$validation->fails()) {
-            $user = User::where('id', $request->id)
-                ->update(['name' => $request->name]);
+            $user = User::where('id', $request->id)->update([
+                  'name' => $request->name,
+                  'role_id' => $request->role_id
+                ]);
 
             if ($request->hasFile('avatar')) {
                  $user->image()->delete();
@@ -136,6 +141,14 @@ class UsersController extends Controller
         $isUser = User::where('email', $request->email)->exists();
 
         return $this->success($isUser);
+    }
+
+    public function isAdmin(Request $request) {
+      if (empty(($request->user()->role()->exists()))) {
+          return $this->success(false);
+      } else {
+          return $this->success($request->user()->role()->name === 'Admin');
+      }
     }
 
     public function getList(Request $request) {

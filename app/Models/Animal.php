@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Models\News;
+use App\Models\Estimate;
+use App\Models\Comment;
 
 class Animal extends Model
 {
@@ -24,13 +26,24 @@ class Animal extends Model
 
     public function tags()
     {
-         return $this->morphToMany(News, 'taggable');
+        return $this->morphToMany(News::class, 'taggable');
+    }
+
+    public function estimates() {
+        return $this->morphMany(Estimate::class, 'estimable');
+    }
+
+    public function comments() {
+      return $this->morphMany(Comment::class, 'commentable');
     }
 
     public static function saveOne(Request $request)
     {
 
-        $animalModel = self::updateOrCreate($request);
+        $animalModel = self::updateOrCreate([
+          'id' => $request->id
+        ], $request->all());
+        /*
         $images = [];
 
         if (!empty($request->allFiles())) {
@@ -48,5 +61,6 @@ class Animal extends Model
                 $image->delete();
             }
         }
+        */
     }
 }
