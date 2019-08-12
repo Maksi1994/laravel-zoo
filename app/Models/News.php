@@ -23,7 +23,7 @@ class News extends Model
     }
 
     public function places() {
-      return $this->morphToMany(Place::class, 'taggable');
+      return $this->morphedByMany(Place::class, 'taggable');
     }
 
     public function estimates() {
@@ -31,7 +31,7 @@ class News extends Model
     }
 
     public function animals() {
-      return $this->morphToMany(Animal::class, 'taggable');
+      return $this->morphedByMany(Animal::class, 'taggable');
     }
 
     public function comments()
