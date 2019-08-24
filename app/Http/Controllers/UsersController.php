@@ -58,13 +58,13 @@ class UsersController extends Controller
 
         if (!$validation->fails()) {
             $user = User::where('id', $request->id)->update([
-                  'name' => $request->name,
-                  'role_id' => $request->role_id
-                ]);
+                'name' => $request->name,
+                'role_id' => $request->role_id
+            ]);
 
             if ($request->hasFile('avatar')) {
-                 $user->image()->delete();
-                 $user->image()->create();
+                $user->image()->delete();
+                $user->image()->create();
             }
 
             $success = true;
@@ -118,6 +118,12 @@ class UsersController extends Controller
         ]);
     }
 
+    public function logout(Request $request)
+    {
+        $request->user()->token()->revoke();
+        return $this->success(true);
+    }
+
     public function activateUser(Request $request)
     {
         $userModel = User::where('activate_token', $request->token)->first();
@@ -131,32 +137,36 @@ class UsersController extends Controller
         return response()->redirectTo('/');
     }
 
-    public function getAllRole(Request $request) {
+    public function getAllRoles(Request $request)
+    {
         $roles = Role::all();
 
         return new RoleCollection($roles);
     }
 
-    public function isUsedEmail(Request $request) {
+    public function isUsedEmail(Request $request)
+    {
         $isUser = User::where('email', $request->email)->exists();
 
         return $this->success($isUser);
     }
 
-    public function isAdmin(Request $request) {
-      if (empty(($request->user()->role()->exists()))) {
-          return $this->success(false);
-      } else {
-          return $this->success($request->user()->role()->name === 'Admin');
-      }
+    public function isAdmin(Request $request)
+    {
+        if (empty(($request->user()->role()->exists()))) {
+            return $this->success(false);
+        } else {
+            return $this->success($request->user()->role()->name === 'Admin');
+        }
     }
 
-    public function getList(Request $request) {
-      $users = User::with(['image', 'role'])
-      ->orderBy('created_at', $request->order ?? 'desc')
-      ->paginate(20, null, null, $request->page ?? 1);
+    public function getList(Request $request)
+    {
+        $users = User::with(['image', 'role'])
+            ->orderBy('created_at', $request->order ?? 'desc')
+            ->paginate(20, null, null, $request->page ?? 1);
 
-      return response()->json($users);
+        return response()->json($users);
     }
 
     public function getOne(Request $request)
@@ -168,5 +178,10 @@ class UsersController extends Controller
         }
 
         return new UserResource($user);
+    }
+
+    public function getCurrUser(Request $request)
+    {
+        return new UserResource($request->user()->with('role')->first());
     }
 }

@@ -41,7 +41,7 @@ class AnimalsController extends Controller
     public function getList(Request $request)
     {
         $animals = Animal::with('places')
-            ->getList($request)
+            ->getBackendList($request)
             ->paginate(20, null, null, $request->page ?? 1);
 
         return new AnimalsCollection($animals);
@@ -49,7 +49,7 @@ class AnimalsController extends Controller
 
     public function delete(Request $request)
     {
-        $succss = (boolean)Animal::destroy($request->id);
+        $success = (boolean)Animal::destroy($request->id);
 
         return $this->success($success);
     }

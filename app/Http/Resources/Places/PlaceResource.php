@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Backend\VisitorsTypes;
+namespace App\Http\Resources\Places;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class VisitorTypeResource extends JsonResource
+class PlaceResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

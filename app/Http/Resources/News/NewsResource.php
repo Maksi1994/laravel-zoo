@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Backend\VisitorsTypes;
+namespace App\Http\Resources\News;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class VisitorTypeResource extends JsonResource
+class NewsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

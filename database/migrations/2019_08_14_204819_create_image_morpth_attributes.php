@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFilesTable extends Migration
+class CreateImageMorpthAttributes extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateFilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('files', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('url');
-            $table->string('contentable_type');
-            $table->string('contentable_id');
-            $table->timestamps();
+        Schema::table('images', function (Blueprint $table) {
+            $table->bigInteger('imageable_id')->unsigned();
+            $table->string('imageable_type');
         });
     }
 
@@ -29,6 +26,8 @@ class CreateFilesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('files');
+        Schema::table('images', function (Blueprint $table) {
+            $table->dropColumn(['imageable_id', 'imageable_type']);
+        });
     }
 }

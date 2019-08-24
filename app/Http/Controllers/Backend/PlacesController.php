@@ -31,8 +31,9 @@ class PlacesController extends Controller
     public function getList(Request $request)
     {
         $places = Place::with('images')
+            ->withCount('animals')
             ->getList($request)
-            ->paginate(20, null, null, $request->page ?? 1);
+            ->paginate(20, '*', null, $request->page ?? 1);
 
         return new PlacesCollection($places);
     }

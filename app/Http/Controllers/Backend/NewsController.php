@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Models\News;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class NewsController extends Controller
 {
@@ -36,20 +37,14 @@ class NewsController extends Controller
     }
 
     public function getOne(Request $request) {
-<<<<<<< HEAD
         $news = News::with(['author', 'animals', 'places'])->find($request->id);
 
-        return new NewsRessource($news);
-=======
-        $news = News::with(['images', 'author'])->find($request->id);
-
-        return new NewsResoru
->>>>>>> 9c84c4742b8bb725aa54020a6275d3850d86e671
+        return new NewsRessourc($news);
     }
 
     public function getList(Request $request) {
         $news = News::with(['author', 'animals', 'places'])
-        ->getList($requst)
+        ->getList($request)
         ->paginate(20, null, null, $requst->page ?? 1);
 
         return new NewsCollection($news);

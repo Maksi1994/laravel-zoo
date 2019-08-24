@@ -47,20 +47,57 @@ Route::group([
           Route::get('get-one/{id}', 'VisitorsTypesController@getOne');
           Route::get('delete/{id}', 'VisitorsTypesController@delete');
     });
+
+    Route::group([
+        'prefix'=>'roles'
+    ], function() {
+        Route::post('save', 'RolesController@save');
+        Route::post('get-list', 'RolesController@getList');
+        Route::get('get-one/{id}', 'RolesController@getOne');
+        Route::get('delete/{id}', 'RolesController@delete');
+    });
 });
 
 Route::group([
     'prefix' => 'users',
 ], function () {
-    Route::get('is-admin', 'UsersController@isAdmin')->middleware('auth:api');
+    Route::group([
+        'middleware' => 'auth:api'
+    ], function() {
+        Route::get('is-admin', 'UsersController@isAdmin');
+        Route::get('get-curr-user', 'UsersController@getCurrUser');
+        Route::get('logout', 'UsersController@logout');
+    });
+
     Route::post('regist', 'UsersController@regist');
     Route::post('login', 'UsersController@login');
     Route::post('update-one', 'UsersController@updateOne');
     Route::get('activate-user/{token}', 'UsersController@activateUser');
     Route::get('get-one/{id}', 'UsersController@getOne');
-    Route::get('get-all-roles', 'UsersController@getAllRole');
+    Route::get('get-all-roles', 'UsersController@getAllRoles');
     Route::get('is-used-email/{email}', 'UsersController@isUsedEmail');
     Route::post('get-list', 'UsersController@getList');
+});
+
+Route::group([
+    'prefix' => 'animals',
+], function () {
+    Route::post('get-list', 'AnimalsController@getList');
+    Route::get('get-one/{id}', 'AnimalsController@getOne');
+});
+
+Route::group([
+    'prefix' => 'places',
+], function () {
+    Route::post('get-list', 'PlcesController@getList');
+    Route::get('get-one/{id}', 'PlcesController@getOne');
+});
+
+Route::group([
+    'prefix' => 'news',
+], function () {
+    Route::post('get-list', 'NewsController@getList');
+    Route::get('get-one/{id}', 'NewsController@getOne');
 });
 
 Route::group([

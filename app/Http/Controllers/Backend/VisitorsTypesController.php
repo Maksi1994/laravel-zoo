@@ -44,7 +44,7 @@ class VisitorsTypesController extends Controller
     {
         $visitorsTypes = VisitorType::withCount('visitors')
         ->getList($request)
-        ->paginate(20, null, null, $request->page ?? 1);
+        ->paginate(20, '*', null, $request->page ?? 1);
 
         return response()->json($visitorsTypes);
     }
